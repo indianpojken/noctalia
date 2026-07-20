@@ -422,22 +422,22 @@ void Application::initIpc() {
   );
 
   m_ipcService.registerHandler(
-      "clipboard-latest-text",
-      [this](const std::string&) -> std::string { return m_panelManager.getLatestClipboardText(); },
-      "clipboard-latest-text", "Retrieve the most recent text entry from clipboard history, skipping non-text entries"
-  );
-
-  m_ipcService.registerHandler(
       "clipboard-copy",
       [this](const std::string& args) -> std::string {
         if (args.empty()) {
-          return "error: clipboard-copy requires <text>\n";
+          return "error: clipboard-copy requires [text]\n";
         }
 
         m_panelManager.copyTextToClipboard(args);
         return "ok\n";
       },
-      "clipboard-copy <text>", "Copy text to clipboard"
+      "clipboard-copy [text]", "Copy text to clipboard"
+  );
+
+  m_ipcService.registerHandler(
+      "clipboard-paste",
+      [this](const std::string&) -> std::string { return m_panelManager.getFirstUnpinnedClipboardText(); },
+      "clipboard-paste", "Print the value of the current clipboard; Empty string on non-text values"
   );
 
   m_ipcService.registerHandler(

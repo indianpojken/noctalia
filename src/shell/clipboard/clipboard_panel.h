@@ -34,7 +34,7 @@ public:
   ~ClipboardPanel() override;
   void setActivateCallback(std::function<void(const ClipboardEntry&)> callback);
   void clearHistoryFromIpc();
-  std::optional<std::string> getLatestClipboardTextFromIpc();
+  std::optional<std::string> getFirstUnpinnedClipboardTextFromIpc();
   void copyTextToClipboardFromIpc(std::string text);
 
   void create() override;

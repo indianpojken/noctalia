@@ -1350,7 +1350,7 @@ void PanelManager::clearClipboardHistory() {
   }
 }
 
-std::string PanelManager::getLatestClipboardText() {
+std::string PanelManager::getFirstUnpinnedClipboardText() {
   const auto it = m_panels.find("clipboard");
 
   if (it == m_panels.end()) {
@@ -1358,10 +1358,10 @@ std::string PanelManager::getLatestClipboardText() {
   }
 
   if (auto* clipboardPanel = dynamic_cast<ClipboardPanel*>(it->second.get())) {
-    return clipboardPanel->getLatestClipboardTextFromIpc().value_or("");
-  } else {
-    return "";
-  }
+    return clipboardPanel->getFirstUnpinnedClipboardTextFromIpc().value_or("");
+  } 
+  
+  return "";
 }
 
 void PanelManager::copyTextToClipboard(std::string text) {

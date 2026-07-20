@@ -1567,12 +1567,26 @@ void ClipboardPanel::clearHistoryFromIpc() {
   }
 }
 
-std::optional<std::string> ClipboardPanel::getLatestClipboardTextFromIpc() {
+std::optional<std::string> ClipboardPanel::getFirstUnpinnedClipboardTextFromIpc() {
   if (m_clipboard == nullptr) {
-    return "";
+    return std::nullopt;
   }
 
-  return m_clipboard->clipboardText();
+  const auto& history = m_clipboard->history();
+
+  for (auto& entry : history) {
+    if (entry.pinned) {
+      continue;
+    }
+
+    if (entry.isImage()) {
+      return std::nullopt;
+    }
+
+    return std::string(entry.data.begin(), entry.data.end());
+  }
+
+  return std::nullopt;
 }
 
 void ClipboardPanel::copyTextToClipboardFromIpc(std::string text) {
