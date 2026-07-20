@@ -1350,6 +1350,32 @@ void PanelManager::clearClipboardHistory() {
   }
 }
 
+std::string PanelManager::getLatestClipboardText() {
+  const auto it = m_panels.find("clipboard");
+
+  if (it == m_panels.end()) {
+    return "";
+  }
+
+  if (auto* clipboardPanel = dynamic_cast<ClipboardPanel*>(it->second.get())) {
+    return clipboardPanel->getLatestClipboardTextFromIpc().value_or("");
+  } else {
+    return "";
+  }
+}
+
+void PanelManager::copyTextToClipboard(std::string text) {
+  const auto it = m_panels.find("clipboard");
+
+  if (it == m_panels.end()) {
+    return;
+  }
+
+  if (auto* clipboardPanel = dynamic_cast<ClipboardPanel*>(it->second.get())) {
+    clipboardPanel->copyTextToClipboardFromIpc(text);
+  }
+}
+
 bool PanelManager::onPointerEvent(const PointerEvent& event) {
   if (!isOpen() || m_inTransition) {
     return false;

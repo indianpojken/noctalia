@@ -1567,6 +1567,22 @@ void ClipboardPanel::clearHistoryFromIpc() {
   }
 }
 
+std::optional<std::string> ClipboardPanel::getLatestClipboardTextFromIpc() {
+  if (m_clipboard == nullptr) {
+    return "";
+  }
+
+  return m_clipboard->clipboardText();
+}
+
+void ClipboardPanel::copyTextToClipboardFromIpc(std::string text) {
+  if (m_clipboard == nullptr) {
+    return;
+  }
+
+  m_clipboard->copyText(text);
+}
+
 void ClipboardPanel::requestClearUnpinnedHistory() {
   if (m_clipboard == nullptr) {
     return;

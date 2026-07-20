@@ -95,6 +95,8 @@ public:
   // IPC-friendly overload: asks CompositorPlatform for preferred interactive output.
   void togglePanel(const std::string& panelId);
   void clearClipboardHistory();
+  std::string getLatestClipboardText();
+  void copyTextToClipboard(std::string text);
 
   bool onPointerEvent(const PointerEvent& event);
   void onKeyboardEvent(const KeyboardEvent& event);
