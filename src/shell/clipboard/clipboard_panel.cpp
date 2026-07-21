@@ -1573,14 +1573,19 @@ std::optional<std::string> ClipboardPanel::getFirstUnpinnedClipboardTextFromIpc(
   }
 
   const auto& history = m_clipboard->history();
+  for (size_t historyIndex = 0; historyIndex < history.size(); ++historyIndex) {
+    const auto& entry = history[historyIndex];
 
-  for (auto& entry : history) {
     if (entry.pinned) {
       continue;
     }
 
     if (entry.isImage()) {
       return std::nullopt;
+    }
+
+    if (!m_clipboard->ensureEntryLoaded(historyIndex) || entry.data.empty()) {
+      continue;
     }
 
     return std::string(entry.data.begin(), entry.data.end());

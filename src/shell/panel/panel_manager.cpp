@@ -1359,8 +1359,8 @@ std::string PanelManager::getFirstUnpinnedClipboardText() {
 
   if (auto* clipboardPanel = dynamic_cast<ClipboardPanel*>(it->second.get())) {
     return clipboardPanel->getFirstUnpinnedClipboardTextFromIpc().value_or("");
-  } 
-  
+  }
+
   return "";
 }
 
